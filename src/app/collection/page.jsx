@@ -86,7 +86,7 @@ const page = () => {
               <ProductItem
                 key={index}
                 id={item.id}
-                image={item.image}
+                image={item.images[0]}
                 name={item.name}
                 price={item.price}
               />

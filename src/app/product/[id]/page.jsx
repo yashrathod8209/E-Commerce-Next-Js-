@@ -2,6 +2,11 @@
 import React, { use, useEffect, useState } from "react";
 import { products } from "@/app/utils/product";
 import Rating from "@/app/components/core/Rating";
+import ReviAndDesc from '@/app/components/reviAndDesc'
+import RelatedProducts from "@/app/components/RelatedProducts";
+import Button from "@/app/components/core/Button";
+import { useDispatch } from "react-redux";
+import { add } from "@/store/cart";
 
 const product = ({ params }) => {
   const [selectedSize, setSelectedSize] = useState("");
@@ -9,8 +14,30 @@ const product = ({ params }) => {
   const [selectedColor, setSelectedColor] = useState("");
   const [product, setProduct] = useState();
   const [isLoading, setIsLoading] = useState(true);
+  const [relatedProducts, setRelatedProducts] = useState();
   const productId = use(params).id;
+  const dispatch = useDispatch()
   // console.log(typeof(productId))
+
+  const addToCart = ()=>{
+    console.log("added")
+    const producttosave = {
+    id:product.id,
+    name:product.name,
+    img:selectedImg,
+    price:product.price,
+    color:selectedColor,
+    size:selectedSize
+    }
+    dispatch(add(producttosave));
+    console.log("added")
+  }
+  
+
+    const findRelated = async(findedProduct)=>{
+      const shorted = products.filter((product)=>product.category == findedProduct.category);
+      console.log(shorted)
+    } 
 
   useEffect(() => {
     setIsLoading(true);
@@ -18,13 +45,15 @@ const product = ({ params }) => {
     setProduct(findedProduct);
     console.log(findedProduct);
     console.log(product);
+    findRelated(findedProduct)
     setSelectedImg(findedProduct.images[0]);
+    setSelectedColor(findedProduct.colors[0])
     setIsLoading(false);
   }, []);
   return (
     <>
       {isLoading ? (
-        <h1>Loading...</h1>
+        <h1 className="text-4xl  text-center my-9">Loading...</h1>
       ) : (
         <div className="max-w-[1440px] mx-auto ">
           <div className="grid grid-cols-2 py-7">
@@ -36,7 +65,7 @@ const product = ({ params }) => {
                   // onClick={()=>setSelectedImg(img)}
                   key={index} 
                   src={img} 
-                  className="w-[100px]" />
+                  className={`w-[100px] p-1  border-2  ${selectedImg == img ? (' border-blue-400'):('border-transparent') }`} />
                 ))}
               </div>
               <div className="col-span-9 px-7">
@@ -57,14 +86,6 @@ const product = ({ params }) => {
                     >
                       {product.description[0]}
                     </p>
-                  {/* {product.description.map((desc, index) => (
-                    <p
-                      className="font-normal text-base text-[#555555]"
-                      key={index}
-                    >
-                      {desc}
-                    </p>
-                  ))} */}
                 </div>
                 <div className="mt-8">
                   <h3 className="font-semibold mt-8 text-xl text-[#656565]">
@@ -111,7 +132,7 @@ const product = ({ params }) => {
                           setSelectedColor(color);
                           console.log(selectedColor);
                         }}
-                        className={`bg-[${color}] group px-2.5 py-2.5  border-2  cursor-pointer  ${
+                        className={`bg-[${color}] group px-2.5 py-2.5  border-2  cursor-pointer bg-gray-200 ${
                           selectedColor == color
                             ? "border-black"
                             : "border-[#d3d3d3]"
@@ -132,10 +153,7 @@ const product = ({ params }) => {
                     ))}
                     {/* </label> */}
                   </div>
-
-                  <button className="uppercase mt-10 bg-black text-white border border-white hover:text-black hover:bg-white hover:border-black transition-all px-10 py-4">
-                    add to cart
-                  </button>
+                    <Button onBtnClick={addToCart} text={"add to cart"} isLoading={false} />
 
                   <div className="h-[1px] my-5 bg-[#ADADAD] w-3/4"></div>
                   <div className="">
@@ -153,7 +171,8 @@ const product = ({ params }) => {
               </div>
             </div>
           </div>
-          <div className="">
+          <ReviAndDesc reviews={product.reviews} description={product.description} />
+          {/* <div className="">
             <div className="">
               <button className="px-4 py-1.5 font-bold text-base text-[#393939] border border-[#D0D0D0] bg-white">
                 Description
@@ -180,6 +199,9 @@ const product = ({ params }) => {
                 <p key={index}>{desc}</p>
               ))}
             </div>
+          </div> */}
+          <div className="">
+            <RelatedProducts currentProductId={product.id} category={product.category}/>
           </div>
         </div>
       )}

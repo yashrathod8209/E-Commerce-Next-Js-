@@ -115,5 +115,28 @@ export const products = [
       { user: "Rohit", comment: "Very comfortable and durable!", rating: 5 },
       { user: "Anjali", comment: "Good grip, perfect for jogging.", rating: 4.7 }
     ]
-  }
+  },
+  {
+    id: 5,
+    name: "Girls Round Neck Cotton Top",
+    description: ["An e-commerce website is an online platform that facilitates the buying and selling of products or services over the internet. It serves as a virtual marketplace where businesses and individuals can showcase their products, interact with customers, and conduct transactions without the need for a physical presence. E-commerce websites have gained immense popularity due to their convenience, accessibility, and the global reach they offer.","E-commerce websites typically display products or services along with detailed descriptions, images, prices, and any available variations (e.g., sizes, colors). Each product usually has its own dedicated page with relevant information."],
+    price: 100,
+    images: [
+      "/assets/images/product1.png",
+      "/assets/images/product2.png",
+      "/assets/images/product3.png",
+      "/assets/images/product4.png"
+    ],
+    colors: ["#ff0000", "#0000ff", "#008000", "#ffff00"], // 
+    category: "Kids",
+    subCategory: "Topwear",
+    sizes: ["M", "L", "XL"],
+    date: 1716621235448,
+    bestseller: false,
+    rating: 4.2,
+    reviews: [
+      { user: "Aisha", comment: "Good quality, my daughter loved it!", rating: 4 },
+      { user: "Neha", comment: "Nice fabric, but sizing runs small.", rating: 3.5 }
+    ]
+  },
 ];
